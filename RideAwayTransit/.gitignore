@@ -8,3 +8,5 @@
 .DS_Store
 /build
 /captures
+# Don't check in new versions of this automatically to avoid accidentally committing real API keys
+app/src/main/res/values/apiKeys.xml

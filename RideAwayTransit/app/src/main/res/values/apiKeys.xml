@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Note: Entries in this file are placeholder. To build this app, you will need to
+         obtain your own keys from the relevant agencies and update them here -->
+    <string name="trimetApiKey">PLACEHOLDER</string>
+</resources>
