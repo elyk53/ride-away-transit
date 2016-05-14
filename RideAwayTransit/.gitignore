@@ -5,6 +5,7 @@
 /.idea/tasks.xml
 /.idea/inspectionProfiles/*
 /.idea/libraries
+/.idea/dictionaries
 .DS_Store
 /build
 /captures

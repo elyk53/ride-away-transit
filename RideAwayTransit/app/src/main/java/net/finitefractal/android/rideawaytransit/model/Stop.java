@@ -7,12 +7,12 @@ import android.location.Location;
  */
 public class Stop
 {
-    private int m_id;
+    private String m_id;
     private String m_name;
     private Location m_location;
     private Direction m_direction;
 
-    public Stop(int id, String name, Location location, Direction direction)
+    public Stop(String id, String name, Location location, Direction direction)
     {
         m_id = id;
         m_name = name;
@@ -20,7 +20,7 @@ public class Stop
         m_direction = direction;
     }
 
-    public int getId() { return m_id; }
+    public String getId() { return m_id; }
     public String getName() { return m_name; }
     public Location getLocation() { return m_location; }
     public Direction getDirection() { return m_direction; }

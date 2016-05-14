@@ -30,15 +30,14 @@ public abstract class AgencyParser
 
     public abstract TransitSystem loadFromWeb();
 
-    protected Document loadXmlDocument(InputStream stream, String schemaUri)
+    protected Document loadXmlDocument(InputStream stream)
             throws ParserConfigurationException, IOException, SAXException
     {
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = schemaFactory.newSchema(new URL(schemaUri));
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(true);
-        factory.setSchema(schema);
-        factory.setValidating(true);
+        // We deliberately don't validate for now because Trimet's XSD does not match their XML
+        // e.g. Stop elements have a "dir" attribute which is not listed. Revisit this
+        // if we add another agency which provides an XSD that validates successfully
         return factory.newDocumentBuilder().parse(stream);
     }
 }
