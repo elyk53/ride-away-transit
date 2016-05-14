@@ -1,6 +1,7 @@
 package net.finitefractal.android.rideawaytransit.parser;
 
 import android.location.Location;
+import android.os.Debug;
 import android.util.Log;
 
 import net.finitefractal.android.rideawaytransit.R;
@@ -10,9 +11,8 @@ import org.w3c.dom.*;
 
 import java.io.*;
 import java.net.*;
-import java.net.URL;
-import java.util.Hashtable;
-import java.util.Locale;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Parser for Trimet (Portland, OR Metro Area).
@@ -64,6 +64,22 @@ public class TrimetParser extends AgencyParser
         {
             Document doc = loadXmlDocument(stream);
             Hashtable<String, Stop> stops = new Hashtable<String, Stop>();
+            ArrayList<Line> lines = new ArrayList<Line>();
+            Element resultSet = doc.getDocumentElement();
+            if(resultSet.getNodeName().equals("resultSet"))
+            {
+                throw new ParseException("Expected resultSet but root node was " +
+                        resultSet.getNodeName(), 0);
+            }
+            NodeList lineNodes = resultSet.getElementsByTagName("route");
+            for(int i = 0; i < lineNodes.getLength(); ++i)
+            {
+                Element lineElem = (Element)lineNodes.item(i);
+                Line line = parseLine(lineElem, stops);
+                lines.add(line);
+            }
+
+            return new TransitSystem(Agency.TRIMET, lines);
         }
         catch(Exception e)
         {
@@ -81,7 +97,17 @@ public class TrimetParser extends AgencyParser
      */
     private Line parseLine(Element root, Hashtable<String, Stop> stops)
     {
+        ArrayList<Route> routeList = new ArrayList<Route>();
+        String description = root.getAttribute("desc");
+        String number = root.getAttribute("route");
+        NodeList routeNodes = root.getElementsByTagName("dir");
+        for(int i = 0; i < routeNodes.getLength(); ++i)
+        {
+            Element routeElem = (Element)routeNodes.item(i);
+            routeList.add(parseRoute(routeElem, stops));
+        }
 
+        return new Line(Agency.TRIMET, number, description, routeList);
     }
 
      /**
@@ -93,7 +119,16 @@ public class TrimetParser extends AgencyParser
      */
     private Route parseRoute(Element root, Hashtable<String, Stop> stops)
     {
+        ArrayList<Stop> stopList = new ArrayList<Stop>();
+        String dest = root.getAttribute("desc");
+        NodeList stopNodes = root.getElementsByTagName("stop");
+        for(int i = 0; i < stopNodes.getLength(); ++i)
+        {
+            Element stopElem = (Element)stopNodes.item(i);
+            stopList.add(getOrParseStop(stopElem, stops));
+        }
 
+        return new Route(dest, stopList);
     }
 
      /**
