@@ -66,7 +66,7 @@ public class TrimetParser extends AgencyParser
             Hashtable<String, Stop> stops = new Hashtable<String, Stop>();
             ArrayList<Line> lines = new ArrayList<Line>();
             Element resultSet = doc.getDocumentElement();
-            if(resultSet.getNodeName().equals("resultSet"))
+            if(!resultSet.getNodeName().equals("resultSet"))
             {
                 throw new ParseException("Expected resultSet but root node was " +
                         resultSet.getNodeName(), 0);
@@ -147,12 +147,8 @@ public class TrimetParser extends AgencyParser
 
         String description = element.getAttribute("desc");
         String direction = element.getAttribute("dir");
-        String latitude = element.getAttribute("lat");
-        String longitude = element.getAttribute("lng");
-
-        Location loc = new Location("Trimet RouteConfig");
-        loc.setLatitude(Double.parseDouble(latitude));
-        loc.setLongitude(Double.parseDouble(longitude));
+        double latitude = Double.parseDouble(element.getAttribute("lat"));
+        double longitude = Double.parseDouble(element.getAttribute("lng"));
 
         // Directions will be of the form "northbound". Need to stop off the ending
         direction = direction.replace("bound", "").toUpperCase(Locale.US);
@@ -167,7 +163,7 @@ public class TrimetParser extends AgencyParser
             dir = Direction.NONE;
         }
 
-        Stop stop = new Stop(stopId, description, loc, dir);
+        Stop stop = new Stop(stopId, description, latitude, longitude, dir);
         stops.put(stopId, stop);
         return stop;
     }
