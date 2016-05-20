@@ -98,8 +98,8 @@ public class TrimetParser extends AgencyParser
     private Line parseLine(Element root, Hashtable<String, Stop> stops)
     {
         ArrayList<Route> routeList = new ArrayList<Route>();
-        String description = root.getAttribute("desc");
-        String number = root.getAttribute("route");
+        String description = root.getAttribute("desc").trim();
+        String number = root.getAttribute("route").trim();
         NodeList routeNodes = root.getElementsByTagName("dir");
         for(int i = 0; i < routeNodes.getLength(); ++i)
         {
@@ -120,7 +120,7 @@ public class TrimetParser extends AgencyParser
     private Route parseRoute(Element root, Hashtable<String, Stop> stops)
     {
         ArrayList<Stop> stopList = new ArrayList<Stop>();
-        String dest = root.getAttribute("desc");
+        String dest = root.getAttribute("desc").trim();
         NodeList stopNodes = root.getElementsByTagName("stop");
         for(int i = 0; i < stopNodes.getLength(); ++i)
         {
@@ -141,12 +141,12 @@ public class TrimetParser extends AgencyParser
      */
     private Stop getOrParseStop(Element element, Hashtable<String, Stop> stops)
     {
-        String stopId = element.getAttribute("locid");
+        String stopId = element.getAttribute("locid").trim();
         if(stops.containsKey(stopId))
             return stops.get(stopId);
 
-        String description = element.getAttribute("desc");
-        String direction = element.getAttribute("dir");
+        String description = element.getAttribute("desc").trim();
+        String direction = element.getAttribute("dir").trim();
         double latitude = Double.parseDouble(element.getAttribute("lat"));
         double longitude = Double.parseDouble(element.getAttribute("lng"));
 

@@ -22,5 +22,6 @@ public class Route
     public String getDestination() { return m_destination; }
     public int numStops() { return m_stops.size(); }
     public Stop getStop(int i) { return m_stops.get(i); }
+    public int getNumStops() { return m_stops.size(); }
     public Iterable<Stop> getStops() { return m_stops; }
 }

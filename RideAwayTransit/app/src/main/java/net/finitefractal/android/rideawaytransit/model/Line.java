@@ -39,4 +39,6 @@ public class Line
     public String getName() { return m_name; }
     public Agency getAgency() { return m_agency; }
     public Iterable<Route> getRoutes() { return m_routes; }
+    public int getNumRoutes() { return m_routes.size(); }
+    public Route getRoute(int idx) { return m_routes.get(idx); }
 }
